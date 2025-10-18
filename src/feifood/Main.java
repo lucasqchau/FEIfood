@@ -4,17 +4,21 @@
  */
 package feifood;
 
+import View.Login;
+
 /**
  *
  * @author uniflchau
  */
-public class FEIfood {
+public class Main {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Login tela1 = new Login();
+        tela1.setVisible(true);
     }
     
 }
