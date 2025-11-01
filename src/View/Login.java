@@ -4,6 +4,11 @@
  */
 package View;
 
+import Controller.ControleLogin;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
 /**
  *
  * @author uniflchau
@@ -15,8 +20,57 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        c = new ControleLogin(this);
     }
 
+    public JButton getBtcadastrar() {
+        return btcadastrar;
+    }
+
+    public void setBtcadastrar(JButton btcadastrar) {
+        this.btcadastrar = btcadastrar;
+    }
+
+    public JButton getBtentrar() {
+        return btentrar;
+    }
+
+    public void setBtentrar(JButton btentrar) {
+        this.btentrar = btentrar;
+    }
+
+    public JLabel getLblsenha() {
+        return lblsenha;
+    }
+
+    public void setLblsenha(JLabel lblsenha) {
+        this.lblsenha = lblsenha;
+    }
+
+    public JLabel getLblusuario() {
+        return lblusuario;
+    }
+
+    public void setLblusuario(JLabel lblusuario) {
+        this.lblusuario = lblusuario;
+    }
+
+    public JTextField getTxt1() {
+        return txt1;
+    }
+
+    public void setTxt1(JTextField txt1) {
+        this.txt1 = txt1;
+    }
+
+    public JTextField getTxt2() {
+        return txt2;
+    }
+
+    public void setTxt2(JTextField txt2) {
+        this.txt2 = txt2;
+    }
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -101,47 +155,50 @@ public class Login extends javax.swing.JFrame {
 
     private void btcadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btcadastrarActionPerformed
         // TODO add your handling code here:
+        Cadastro tela3 = new Cadastro();
+        tela3.setVisible(true);
     }//GEN-LAST:event_btcadastrarActionPerformed
 
     private void btentrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btentrarActionPerformed
         // TODO add your handling code here:
+        c.loginAluno();
     }//GEN-LAST:event_btentrarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
-    }
-
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Login().setVisible(true);
+//            }
+//        });
+//    }
+    private ControleLogin c;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btcadastrar;
     private javax.swing.JButton btentrar;
