@@ -4,6 +4,13 @@
  */
 package View;
 
+// Importa o controller responsável pela lógica do cadastro
+import Controller.CadastroControle;
+// Importa interface para tratar eventos de clique nos botões
+import java.awt.event.ActionListener;
+// Importa classes para mostrar mensagens e trabalhar com campos de texto
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 /**
  *
  * @author uniflchau
@@ -14,7 +21,9 @@ public class Cadastro extends javax.swing.JFrame {
      * Creates new form Cadastro
      */
     public Cadastro() {
-        initComponents();
+        initComponents();// Inicializa os componentes gráficos
+        setLocationRelativeTo(null);// Centraliza a janela na tela
+        c = new CadastroControle(this);// Cria o controller e o associa a esta tela (apelidado de 'c')
     }
 
     /**
@@ -34,7 +43,7 @@ public class Cadastro extends javax.swing.JFrame {
         txt3 = new javax.swing.JTextField();
         lblnome = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblusuario.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblusuario.setText("Usuário:");
@@ -105,6 +114,12 @@ public class Cadastro extends javax.swing.JFrame {
 
     private void btcadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btcadastrarActionPerformed
         // TODO add your handling code here:
+        // Chama o método de cadastro no controller (CadastroControle)
+        c.CadastroCliente();// Executa a lógica para salvar o cliente no banco
+        // Após cadastrar, volta para a tela de Login
+        Login tela1 = new Login();
+        tela1.setVisible(true);// Exibe a tela de login
+        this.dispose();// Fecha a tela de cadastro
     }//GEN-LAST:event_btcadastrarActionPerformed
 
     private void txt3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt3ActionPerformed
@@ -145,7 +160,44 @@ public class Cadastro extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+    //Getters e Setters
+    public JTextField getTxt1() {
+        return txt1;
+    }
+    public JTextField getTxt2() {
+        return txt2;
+    }
+    public JTextField getTxt3() {
+        return txt3;
+    }
+    
+    public String getNome() {
+        return txt1.getText();
+    }
 
+    public String getUsuario() {
+        return txt2.getText();
+    }
+
+    public String getSenha() {
+        return txt3.getText();
+    }
+
+    public void limparCampos() {
+        txt1.setText("");
+        txt2.setText("");
+        txt3.setText("");
+    }
+
+    public void mostrarMensagem(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
+    }
+
+    public void addCadastrarListener(ActionListener listener) {
+        btcadastrar.addActionListener(listener);
+    }
+    // Controller associado a esta tela (responsável pela lógica do cadastro)
+    private CadastroControle c;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btcadastrar;
     private javax.swing.JLabel lblnome;

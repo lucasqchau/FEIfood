@@ -14,16 +14,46 @@ public class Alimento {
     private String tipoItem;
     private double precoItem;
 
-    public int getIdItens() { return idItens; }
-    public void setIdItens(int idItens) { this.idItens = idItens; }
+    //Getters e Setters
+    public int getIdItens() {
+        return idItens;
+    }
 
-    public String getDescItem() { return descItem; }
-    public void setDescItem(String descItem) { this.descItem = descItem; }
+    public void setIdItens(int idItens) {
+        this.idItens = idItens;
+    }
 
-    public String getTipoItem() { return tipoItem; }
-    public void setTipoItem(String tipoItem) { this.tipoItem = tipoItem; }
+    public String getDescItem() {
+        return descItem;
+    }
 
-    public double getPrecoItem() { return precoItem; }
-    public void setPrecoItem(double precoItem) { this.precoItem = precoItem; }
+    public void setDescItem(String descItem) {
+        this.descItem = descItem;
+    }
 
+    public String getTipoItem() {
+        return tipoItem;
+    }
+
+    public void setTipoItem(String tipoItem) {
+        this.tipoItem = tipoItem;
+    }
+
+    public double getPrecoItem() {
+        return precoItem;
+    }
+
+    public void setPrecoItem(double precoItem) {
+        this.precoItem = precoItem;
+    }
+
+    /**
+     * Retorna o preço final do item.
+     * Implementação padrão: retorna apenas o preço base (sem nenhuma regra extra).
+     * Subclasses (como Bebida, por exemplo) podem sobrescrever este método
+     * para aplicar impostos, taxas ou descontos específicos.
+     */
+    public double getPrecoFinal() {
+        return getPrecoItem();
+    }
 }

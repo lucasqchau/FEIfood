@@ -11,7 +11,7 @@ import View.Login;
  * @author uniflchau
  */
 public class Main {
-
+    public static final double taxaAlcool = 1.15;
     /**
      * @param args the command line arguments
      */

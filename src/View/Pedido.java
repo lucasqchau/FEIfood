@@ -4,6 +4,7 @@
  */
 package View;
 
+
 import Controller.AlimentoControle;
 import Model.Alimento;
 import java.util.List;
@@ -15,29 +16,36 @@ import javax.swing.table.DefaultTableModel;
  * @author uniflchau
  */
 public class Pedido extends javax.swing.JFrame {
-    
+    // Modelo da tabela que será usado para manipular as linhas (dados) da jtbtabela
     private DefaultTableModel modelo;
+    // Controller responsável por buscar os alimentos (comida/bebida) no "banco" ou camada de dados
     private AlimentoControle controller = new AlimentoControle();
     /**
      * Creates new form Pedido
      */
     public Pedido() {
-        initComponents();
-        modelo = (DefaultTableModel) jtbtabela.getModel();
-        configurarTabela();
-        carregarTipos();
-        carregarDados("", "Todos");
-        configurarListeners();
-        setLocationRelativeTo(null);
+        initComponents();// Inicializa os componentes gráficos
+        modelo = (DefaultTableModel) jtbtabela.getModel();// Pega o modelo da tabela já criada no initComponents
+        configurarTabela();// Ajusta os nomes das colunas
+        carregarTipos();// Preenche o ComboBox com os tipos de alimento
+        carregarDados("", "Todos");// Carrega todos os itens inicialmente (sem filtro)
+        configurarListeners();// Adiciona os listeners de filtro (texto e combo)
+        setLocationRelativeTo(null);// Centraliza a janela na tela
     }
-
+    /**
+     * Define a configuração da tabela.
+     * Aqui são definidos os nomes das colunas que aparecem no cabeçalho da jtbtabela.
+     */
     private void configurarTabela() {
+        // Define as colunas: Descrição do item, Tipo do item e Preço
         modelo.setColumnIdentifiers(new String[]{"Descrição", "Tipo", "Preço"});
     }
-    
+    //Carrega os Dados na tabela baseados no BD
     private void carregarDados(String descricao, String tipo) {
-        modelo.setRowCount(0); // limpa tabela
+        modelo.setRowCount(0);// limpa todas as linhas da tabela antes de recarregar
+        // Busca a lista de alimentos com base nos filtros
         List<Alimento> alimento = controller.buscar(descricao, tipo);
+        // Para cada alimento encontrado, adiciona uma linha na tabela
         for (Alimento i : alimento) {
             modelo.addRow(new Object[]{
                 i.getDescItem(),
@@ -46,15 +54,25 @@ public class Pedido extends javax.swing.JFrame {
             });
         }
     }
+        /**
+        * Carrega os tipos de alimentos no ComboBox (jcb1).
+        * Esses valores serão usados para filtrar a tabela por tipo.
+        */
         private void carregarTipos() {
-        jcb1.removeAllItems();
-        jcb1.addItem("Todos");
+        jcb1.removeAllItems();// Remove qualquer item padrão
+        jcb1.addItem("Todos");// Opção para exibir todos os tipos
         jcb1.addItem("Comida");
         jcb1.addItem("Bebida");
         jcb1.addItem("Bebida Alcoólica");
     }
-        
+    
+     /**
+     * Configura os listeners (ouvintes) para os filtros.
+     * - DocumentListener no txt1 para filtrar automaticamente enquanto o usuário digita.
+     * - ActionListener no jcb1 para filtrar quando o tipo é alterado.
+     */
     private void configurarListeners() {
+        // Listener para mudanças de texto no campo txt1 (campo de filtro por descrição)
         txt1.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) { atualizarTabela(); }
@@ -63,13 +81,19 @@ public class Pedido extends javax.swing.JFrame {
             @Override
             public void changedUpdate(DocumentEvent e) { atualizarTabela(); }
         });
+        // Listener para mudanças na seleção do ComboBox de tipos
         jcb1.addActionListener(e -> atualizarTabela());
     }
     
+    /**
+     * Atualiza a tabela de acordo com os filtros atuais. 
+     * Pegamos o texto digitado (descrição) e o tipo selecionado, e chamamos
+     * o método carregarDados para recarregar a tabela.
+     */
     private void atualizarTabela() {
-        String descricao = txt1.getText();
-        String tipo = (String) jcb1.getSelectedItem();
-        carregarDados(descricao, tipo);
+        String descricao = txt1.getText();// Texto digitado (filtro de descrição)
+        String tipo = (String) jcb1.getSelectedItem();// Tipo selecionado no ComboBox
+        carregarDados(descricao, tipo);// Recarrega a tabela com os novos filtros
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -85,8 +109,10 @@ public class Pedido extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         txt1 = new javax.swing.JTextArea();
         jcb1 = new javax.swing.JComboBox<>();
+        Jbtadicionar = new javax.swing.JButton();
+        jbtcarrinho = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jtbtabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -108,6 +134,20 @@ public class Pedido extends javax.swing.JFrame {
 
         jcb1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        Jbtadicionar.setText("Adicionar");
+        Jbtadicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JbtadicionarActionPerformed(evt);
+            }
+        });
+
+        jbtcarrinho.setText("Carrinho");
+        jbtcarrinho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtcarrinhoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,10 +156,14 @@ public class Pedido extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jcb1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Jbtadicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcb1, 0, 147, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2))
+                        .addComponent(jbtcarrinho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -127,17 +171,72 @@ public class Pedido extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jcb1)
-                    .addComponent(jScrollPane4))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jcb1, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Jbtadicionar, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+                    .addComponent(jbtcarrinho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+    private void JbtadicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbtadicionarActionPerformed
+        // TODO add your handling code here:
+        // Pega a linha selecionada na tabela
+        int row = jtbtabela.getSelectedRow();
+            // Se nenhuma linha foi selecionada, mostra mensagem e sai do método
+            if (row == -1) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Selecione um produto na tabela!");
+                return;
+            }
+
+            // Pega os valores da tabela
+            String desc  = modelo.getValueAt(row, 0).toString();// Coluna Descrição
+            String tipo  = modelo.getValueAt(row, 1).toString();// Coluna Tipo
+            double preco = Double.parseDouble(modelo.getValueAt(row, 2).toString());// Coluna Preço
+
+            boolean alcoolica = false;
+            int idxColAlcoolica = 3; // índice da coluna de "alcoólica"
+            if (modelo.getColumnCount() > idxColAlcoolica) {
+                alcoolica = Boolean.parseBoolean(modelo.getValueAt(row, idxColAlcoolica).toString());
+            }
+
+            // Cria o item conforme o tipo
+            Model.Alimento item;
+            if ("Bebida".equalsIgnoreCase(tipo)) {
+                // Se for bebida, cria um objeto específico de Bebida,
+                // que pode ter o atributo "alcoólica" além do preço
+                item = new Model.Bebida(desc, preco, alcoolica);
+            } else {
+                // Para outros tipos, usa o Alimento genérico
+                Model.Alimento a = new Model.Alimento();
+                a.setDescItem(desc);
+                a.setTipoItem(tipo);
+                a.setPrecoItem(preco);
+                item = a;
+            }
+
+            // Adiciona ao pedido através do controller responsável
+            Controller.PedidoControle.adicionarItem(item);
+            
+            // Exibe mensagem de confirmação
+            javax.swing.JOptionPane.showMessageDialog(this, desc + " adicionado ao pedido!");
+    }//GEN-LAST:event_JbtadicionarActionPerformed
+    /**
+     * Evento disparado ao clicar no botão "Carrinho".
+     * Abre a tela de Carrinho e fecha a tela de Pedido atual.
+     */
+    private void jbtcarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtcarrinhoActionPerformed
+        // TODO add your handling code here:
+        new View.Carrinho().setVisible(true);// Abre a tela de carrinho
+        this.dispose();// Fecha a tela atual de pedido
+    }//GEN-LAST:event_jbtcarrinhoActionPerformed
+  
     /**
      * @param args the command line arguments
      */
@@ -174,8 +273,10 @@ public class Pedido extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Jbtadicionar;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JButton jbtcarrinho;
     private javax.swing.JComboBox<String> jcb1;
     private javax.swing.JTable jtbtabela;
     private javax.swing.JTextArea txt1;
