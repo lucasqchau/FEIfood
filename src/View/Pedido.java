@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package View;
-
 
 import Controller.AlimentoControle;
 import Model.Alimento;
@@ -11,41 +6,56 @@ import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+
 /**
+ * Tela de pedido do aplicativo. Permite pesquisar alimentos por descrição
+ * e filtrar por tipo, exibindo os resultados em uma tabela. Também possibilita
+ * adicionar itens ao carrinho e navegar para a tela de carrinho.
  *
- * @author uniflchau
+ * A lista de alimentos é carregada por meio do {@link AlimentoControle}.
+ * 
+ * author uniflchau
  */
 public class Pedido extends javax.swing.JFrame {
-    // Modelo da tabela que será usado para manipular as linhas (dados) da jtbtabela
+
+    /** Modelo utilizado para preencher a tabela jtbtabela. */
     private DefaultTableModel modelo;
-    // Controller responsável por buscar os alimentos (comida/bebida) no "banco" ou camada de dados
+
+    /** Controller responsável por executar buscas de alimentos. */
     private AlimentoControle controller = new AlimentoControle();
+
     /**
-     * Creates new form Pedido
+     * Construtor da tela de pedidos.
+     * Inicializa os componentes gráficos, configura tabela, listeners e
+     * carrega os itens inicialmentes exibidos.
      */
     public Pedido() {
-        initComponents();// Inicializa os componentes gráficos
-        modelo = (DefaultTableModel) jtbtabela.getModel();// Pega o modelo da tabela já criada no initComponents
-        configurarTabela();// Ajusta os nomes das colunas
-        carregarTipos();// Preenche o ComboBox com os tipos de alimento
-        carregarDados("", "Todos");// Carrega todos os itens inicialmente (sem filtro)
-        configurarListeners();// Adiciona os listeners de filtro (texto e combo)
-        setLocationRelativeTo(null);// Centraliza a janela na tela
+        initComponents();
+        modelo = (DefaultTableModel) jtbtabela.getModel();
+        configurarTabela();
+        carregarTipos();
+        carregarDados("", "Todos");
+        configurarListeners();
+        setLocationRelativeTo(null);
     }
+
     /**
-     * Define a configuração da tabela.
-     * Aqui são definidos os nomes das colunas que aparecem no cabeçalho da jtbtabela.
+     * Configura as colunas exibidas na tabela de alimentos.
      */
     private void configurarTabela() {
-        // Define as colunas: Descrição do item, Tipo do item e Preço
         modelo.setColumnIdentifiers(new String[]{"Descrição", "Tipo", "Preço"});
     }
-    //Carrega os Dados na tabela baseados no BD
+
+    /**
+     * Carrega os alimentos no JTable de acordo com filtros fornecidos.
+     *
+     * @param descricao texto parcial ou completo da descrição
+     * @param tipo tipo selecionado ("Todos", "Comida", etc.)
+     */
     private void carregarDados(String descricao, String tipo) {
-        modelo.setRowCount(0);// limpa todas as linhas da tabela antes de recarregar
-        // Busca a lista de alimentos com base nos filtros
+        modelo.setRowCount(0);
         List<Alimento> alimento = controller.buscar(descricao, tipo);
-        // Para cada alimento encontrado, adiciona uma linha na tabela
+
         for (Alimento i : alimento) {
             modelo.addRow(new Object[]{
                 i.getDescItem(),
@@ -54,25 +64,22 @@ public class Pedido extends javax.swing.JFrame {
             });
         }
     }
-        /**
-        * Carrega os tipos de alimentos no ComboBox (jcb1).
-        * Esses valores serão usados para filtrar a tabela por tipo.
-        */
-        private void carregarTipos() {
-        jcb1.removeAllItems();// Remove qualquer item padrão
-        jcb1.addItem("Todos");// Opção para exibir todos os tipos
+
+    /**
+     * Carrega os tipos no ComboBox de filtro.
+     */
+    private void carregarTipos() {
+        jcb1.removeAllItems();
+        jcb1.addItem("Todos");
         jcb1.addItem("Comida");
         jcb1.addItem("Bebida");
         jcb1.addItem("Bebida Alcoólica");
     }
-    
-     /**
-     * Configura os listeners (ouvintes) para os filtros.
-     * - DocumentListener no txt1 para filtrar automaticamente enquanto o usuário digita.
-     * - ActionListener no jcb1 para filtrar quando o tipo é alterado.
+
+    /**
+     * Adiciona ouvintes para atualizar a tabela quando o texto ou tipo muda.
      */
     private void configurarListeners() {
-        // Listener para mudanças de texto no campo txt1 (campo de filtro por descrição)
         txt1.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) { atualizarTabela(); }
@@ -81,24 +88,21 @@ public class Pedido extends javax.swing.JFrame {
             @Override
             public void changedUpdate(DocumentEvent e) { atualizarTabela(); }
         });
-        // Listener para mudanças na seleção do ComboBox de tipos
+
         jcb1.addActionListener(e -> atualizarTabela());
     }
-    
+
     /**
-     * Atualiza a tabela de acordo com os filtros atuais. 
-     * Pegamos o texto digitado (descrição) e o tipo selecionado, e chamamos
-     * o método carregarDados para recarregar a tabela.
+     * Atualiza a tabela com base nos filtros atuais de descrição e tipo.
      */
     private void atualizarTabela() {
-        String descricao = txt1.getText();// Texto digitado (filtro de descrição)
-        String tipo = (String) jcb1.getSelectedItem();// Tipo selecionado no ComboBox
-        carregarDados(descricao, tipo);// Recarrega a tabela com os novos filtros
+        String descricao = txt1.getText();
+        String tipo = (String) jcb1.getSelectedItem();
+        carregarDados(descricao, tipo);
     }
+
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * Método gerado automaticamente pelo NetBeans para montagem da interface.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -229,7 +233,9 @@ public class Pedido extends javax.swing.JFrame {
     }//GEN-LAST:event_JbtadicionarActionPerformed
     /**
      * Evento disparado ao clicar no botão "Carrinho".
-     * Abre a tela de Carrinho e fecha a tela de Pedido atual.
+     * Abre a tela de carrinho e fecha a tela atual.
+     *
+     * @param evt evento de clique
      */
     private void jbtcarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtcarrinhoActionPerformed
         // TODO add your handling code here:
@@ -237,9 +243,6 @@ public class Pedido extends javax.swing.JFrame {
         this.dispose();// Fecha a tela atual de pedido
     }//GEN-LAST:event_jbtcarrinhoActionPerformed
   
-    /**
-     * @param args the command line arguments
-     */
 //    public static void main(String args[]) {
 //        /* Set the Nimbus look and feel */
 //        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -19,13 +19,23 @@ public class CadastroControle {
     // Referência para a tela de cadastro (View)
     private Cadastro tela2;
     
-    //Construtor do controller de cadastro.
+    /**
+    * Construtor do controller de cadastro.
+    *
+    * @param tela2 instância da tela de Cadastro utilizada para obter os dados
+    *              digitados pelo usuário.
+    */
     public CadastroControle(Cadastro tela2) {
         this.tela2 = tela2;
 
     }
     
-    public void CadastroCliente(){
+    /**
+    * Realiza o cadastro de um cliente a partir dos dados digitados na tela.
+    * Cria um objeto Cliente, abre conexão com o banco e chama o DAO para
+    * persistir as informações.
+    */
+    public void cadastroCliente(){
         // Monta o objeto Cliente com os dados vindos dos campos de texto da tela
         Cliente cliente = new Cliente(
             tela2.getTxt1().getText(),// Nome digitado

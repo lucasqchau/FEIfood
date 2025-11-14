@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dao;
 
 import Model.Cliente;
@@ -11,58 +7,69 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
 /**
- *
- * @author uniflchau
+ * DAO responsável por acessar e manipular os dados da tabela tb_clientes.
+ * Permite consultar (login) e cadastrar novos clientes no banco de dados.
+ * 
+ * Utiliza uma conexão fornecida externamente via injeção de dependência.
+ * 
+ * author uniflchau
  */
 public class ClienteDAO {
-    // Conexão com o banco de dados, recebida de fora (injeção de dependência)
+
+    /** Conexão ativa com o banco de dados. */
     private Connection conexao;
 
+    /**
+     * Construtor do ClienteDAO.
+     *
+     * @param conexao conexão já aberta que será utilizada para executar
+     *                comandos SQL.
+     */
     public ClienteDAO(Connection conexao) {
         this.conexao = conexao;
     }
-    
+
     /**
-     * Consulta se os dados digitados (usuário e senha) estão corretos,
-     * baseado nas informações armazenadas no banco de dados.
+     * Consulta se existe um cliente com o usuário e senha informados.
+     *
+     * @param cliente objeto Cliente contendo usuário e senha digitados
+     * @return ResultSet contendo o resultado da consulta (pode estar vazio)
+     * @throws SQLException caso ocorra erro ao executar o comando SQL
      */
-    public ResultSet consultar(Cliente cliente) throws SQLException{
-        // Comando SQL com parâmetros (placeholders '?')
-        String sql = 
-       "select * from tb_clientes where user_cliente = ? and senha_cliente = ?";
-        // Prepara o comando SQL para execução
+    public ResultSet consultar(Cliente cliente) throws SQLException {
+
+        String sql =
+            "SELECT * FROM tb_clientes WHERE user_cliente = ? AND senha_cliente = ?";
+
         PreparedStatement statement = conexao.prepareStatement(sql);
-        // Substitui o primeiro '?' pelo usuário informado
+
         statement.setString(1, cliente.getUsuario());
-        // Substitui o segundo '?' pela senha informada
         statement.setString(2, cliente.getSenha());
-        // Executa a consulta no banco
+
         statement.execute();
-        // Recupera o resultado da consulta
-        ResultSet resultado = statement.getResultSet();
-        // Retorna o ResultSet para ser tratado pelo Controller
-        return resultado;
+        return statement.getResultSet();
     }
-    
-    //Cadastra um novo cliente no BD
+
+    /**
+     * Cadastra um novo cliente no banco de dados.
+     *
+     * @param cliente objeto Cliente contendo nome, usuário e senha a serem gravados
+     * @throws SQLException caso ocorra erro ao executar o comando SQL
+     */
     public void cadastrar(Cliente cliente) throws SQLException {
-        // Comando SQL de inserção de um novo cliente
-        String sql = 
-        "INSERT INTO tb_clientes (user_cliente, nome_cliente, senha_cliente) "
-                + "VALUES (?,?,?)";
         
-        // Prepara o comando SQL para execução
+        String sql =
+            "INSERT INTO tb_clientes (user_cliente, nome_cliente, senha_cliente) "
+          + "VALUES (?, ?, ?)";
+
         PreparedStatement statement = conexao.prepareStatement(sql);
-        // Define os valores para cada placeholder do SQL, na ordem:
-        // 1º parâmetro -> user_cliente
-        // 2º parâmetro -> nome_cliente
-        // 3º parâmetro -> senha_cliente
-        statement.setString(1, cliente.getNome());// valor para user_cliente
-        statement.setString(2, cliente.getUsuario());// valor para nome_cliente
-        statement.setString(3, cliente.getSenha());// valor para senha_cliente 
-        // Executa o comando de INSERT (não é consulta, então é executeUpdate)
+
+        // Correção dos parâmetros:
+        statement.setString(1, cliente.getUsuario()); // user_cliente
+        statement.setString(2, cliente.getNome());    // nome_cliente
+        statement.setString(3, cliente.getSenha());   // senha_cliente
+
         statement.executeUpdate();
-        // Executa o comando de INSERT (não é consulta, então é executeUpdate)
         statement.close();
     }
 }

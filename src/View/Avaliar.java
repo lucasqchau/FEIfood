@@ -1,93 +1,90 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package View;
 
 /**
+ * Tela de avaliação do aplicativo. Exibe cinco estrelas que o usuário pode
+ * selecionar para atribuir uma nota de 0 a 5. A nota é exibida visualmente
+ * preenchendo ou esvaziando as estrelas.
  *
- * @author rchau
+ * A classe utiliza botões do Swing configurados para simular estrelas e
+ * registra interações do usuário por meio de ActionListeners.
+ * 
+ * author rchau
  */
 public class Avaliar extends javax.swing.JFrame {
-    // Vetor com as referências dos botões que representam as estrelas
+
+    /** Vetor contendo os botões representando as estrelas. */
     private javax.swing.JButton[] estrelas;
-    // Nota atual selecionada pelo usuário (0 a 5)
+
+    /** Nota selecionada pelo usuário (0 a 5). */
     private int notaAtual = 0;
-    // Logger para registrar mensagens de log (útil para debug)
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Avaliar.class.getName());
+
+    /** Logger para registrar mensagens de depuração. */
+    private static final java.util.logging.Logger logger =
+            java.util.logging.Logger.getLogger(Avaliar.class.getName());
 
     /**
-     * Creates new form FinalizarPedido
+     * Construtor da tela de avaliação.
+     * Inicializa os componentes, centraliza a janela e configura o comportamento
+     * dos botões de estrela.
      */
     public Avaliar() {
-        initComponents();// Inicializa os componentes gráficos
-        setLocationRelativeTo(null);// Centraliza a janela na tela
-        configurarEstrelas();// Configura o visual e o comportamento dos botões de estrela
+        initComponents();
+        setLocationRelativeTo(null);
+        configurarEstrelas();
     }
-    
+
     /**
-     * Configura os botões de estrela.
-     * - Coloca todos os botões de estrela em um array para facilitar o controle.
-     * - Define fonte, aparência e símbolo padrão (estrela vazia).
-     * - Adiciona um ActionListener em cada botão para alterar a nota ao clicar.
+     * Configura os botões que representam as estrelas.
+     * Define fonte, aparência visual e adiciona ActionListeners para permitir
+     * que o usuário selecione uma nota de 0 a 5.
      */
     private void configurarEstrelas() {
-    // Array com os 5 botões de estrela
-    estrelas = new javax.swing.JButton[]{ 
-        jbestrela1, jbestrela2, jbestrela3, jbestrela4, jbestrela5 
-    };
-    // Define a fonte (tamanho) que será usada nas estrelas
-    java.awt.Font fonteEstrela = new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 32);
-    
-    // Configura cada botão de estrela
-    for (int i = 0; i < estrelas.length; i++) {
-        javax.swing.JButton b = estrelas[i];
-        b.setFont(fonteEstrela);// aumenta o tamanho
-        b.setText("\u2606");// ☆ vazia
-        b.setFocusPainted(false);// remove o foco visual do botão
-        b.setBorderPainted(false);// remove borda
-        b.setContentAreaFilled(false);// remove o fundo padrão do botão
+        estrelas = new javax.swing.JButton[]{
+            jbestrela1, jbestrela2, jbestrela3, jbestrela4, jbestrela5
+        };
 
-        // valorEstrela = 1, 2, 3, 4 ou 5, conforme o índice
-        final int valorEstrela = i + 1;
+        java.awt.Font fonteEstrela =
+                new java.awt.Font("SansSerif", java.awt.Font.PLAIN, 32);
 
-        // Ao clicar em uma estrela:
-        // - se ela já é a nota atual, zera (remove a avaliação)
-        // - senão, define a nota para aquele valor
-        b.addActionListener(e -> {
-            if (notaAtual == valorEstrela) {
-                // Clicou novamente na mesma estrela: desmarca tudo (nota 0)
-                notaAtual = 0;
-            } else {
-                // Define a nova nota
-                notaAtual = valorEstrela;
-            }
-            // Atualiza o visual das estrelas (cheias/vazias)
-            atualizarEstrelas();
-        });
+        for (int i = 0; i < estrelas.length; i++) {
+            javax.swing.JButton b = estrelas[i];
+            b.setFont(fonteEstrela);
+            b.setText("\u2606"); // estrela vazia
+            b.setFocusPainted(false);
+            b.setBorderPainted(false);
+            b.setContentAreaFilled(false);
+
+            final int valorEstrela = i + 1;
+
+            b.addActionListener(e -> {
+                if (notaAtual == valorEstrela) {
+                    notaAtual = 0;
+                } else {
+                    notaAtual = valorEstrela;
+                }
+                atualizarEstrelas();
+            });
         }
     }
-    
+
     /**
-     * Atualiza o texto das estrelas de acordo com a nota atual.
-     * - Estrelas até a posição `notaAtual - 1` ficam cheias (★).
-     * - As demais ficam vazias (☆).
+     * Atualiza o estado visual das estrelas de acordo com a nota selecionada.
+     * Estrelas com índice menor que a nota exibem o símbolo ★; caso contrário, ☆.
      */
     private void atualizarEstrelas() {
-    for (int i = 0; i < estrelas.length; i++) {
-        if (i < notaAtual) {
-            estrelas[i].setText("\u2605"); // ★ cheia
-        } else {
-            estrelas[i].setText("\u2606"); // ☆ vazia
-        }
+        for (int i = 0; i < estrelas.length; i++) {
+            if (i < notaAtual) {
+                estrelas[i].setText("\u2605"); // ★ cheia
+            } else {
+                estrelas[i].setText("\u2606"); // ☆ vazia
+            }
         }
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    // -------------------------------------------------------------------------
+    // A partir daqui é código gerado automaticamente pelo NetBeans.
+    // Não é necessário adicionar Javadoc, pois initComponents() é private.
+    // -------------------------------------------------------------------------
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
